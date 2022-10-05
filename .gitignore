@@ -1,15 +1,17 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+.DS_Store
+cover.out
 
-# Test binary, built with `go test -c`
-*.test
+.vscode/launch.json
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+# backup file
+/backup/
+/*.tar.gz
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+# personal developer settings
+/.dev/
+
+# external dependencies from Depfile
+/.ext/
+
+# goreleaser output dir
+/dist/

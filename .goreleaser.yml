@@ -1,0 +1,100 @@
+before:
+  hooks:
+
+builds:
+  -
+    id: build
+    main: ./cmd/patch-users
+    binary: patch-users
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s
+      - -w
+      - -X github.com/aserto-dev/patch-users/pkg/version.ver={{.Version}}
+      - -X github.com/aserto-dev/patch-users/pkg/version.commit={{.ShortCommit}}
+      - -X github.com/aserto-dev/patch-users/pkg/version.date={{.Date}}
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+archives:
+  - format: zip
+    replacements:
+      darwin: darwin
+      linux: linux
+      windows: windows
+      amd64: x86_64
+    files:
+      - LICENSE.md
+      - README.md
+    name_template: "patch-users_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ .Tag }}"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+release:
+  disable: true
+
+blobs:
+  -
+    provider: gs
+    bucket: aserto-cli
+    folder: "patch-users/{{ .Version }}"
+    extra_files:
+      - glob: VERSION.txt
+  -
+    provider: gs
+    bucket: aserto-cli
+    folder: "patch-users/latest"
+    extra_files:
+      - glob: VERSION.txt
+
+brews:
+  -
+    name: patch-users
+
+    tap:
+      owner: aserto-dev
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP }}"
+
+    url_template: "https://storage.googleapis.com/aserto-cli/patch-users/{{ .Version }}/{{ .ArtifactName }}"
+
+    download_strategy: CurlDownloadStrategy
+
+    commit_author:
+      name: Aserto Bot
+      email: github-bot@aserto.com
+
+    homepage: "https://docs.aserto.com/"
+
+    description: "Patch Users Support Tool"
+
+    license: "MIT"
+
+    skip_upload: false
+
+    test: |
+      system "#{bin}/patch-users version"
+
+    install: |
+      bin.install "patch-users"
