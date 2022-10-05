@@ -2,7 +2,10 @@ module github.com/aserto-dev/patch-users/magefiles
 
 go 1.17
 
-require github.com/aserto-dev/mage-loot v0.8.10
+require (
+	github.com/aserto-dev/mage-loot v0.8.10
+	github.com/pkg/errors v0.9.1
+)
 
 require (
 	github.com/aserto-dev/clui v0.8.1 // indirect
@@ -21,7 +24,6 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rs/zerolog v1.25.0 // indirect
 	github.com/spf13/afero v1.8.2 // indirect

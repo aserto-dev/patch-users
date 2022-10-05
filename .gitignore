@@ -15,3 +15,5 @@ cover.out
 
 # goreleaser output dir
 /dist/
+
+VERSION.txt
